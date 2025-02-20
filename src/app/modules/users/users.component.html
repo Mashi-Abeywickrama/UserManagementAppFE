@@ -1,0 +1,23 @@
+<div class="search-container">
+  <!-- Search Input Field -->
+  <input nz-input [(ngModel)]="searchQuery" placeholder="Search by Student Name" (input)="onSearch()" />
+  
+  <!-- Add User Button -->
+  <button nz-button nzType="primary" (click)="navigateToAddUser()">Add User</button>
+</div>
+
+<app-users-table
+  [users]="filteredUsers"
+  (edit)="openEditModal($event)"
+  (delete)="confirmDelete($event)">
+</app-users-table>
+
+<!-- <app-users-modal
+  [isVisible]="isEditModalVisible"
+  [user]="selectedUser!"
+  (save)="saveUser($event)"
+  (cancel)="closeEditModal()">
+</app-users-modal> -->
+
+
+

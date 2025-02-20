@@ -1,0 +1,50 @@
+
+
+
+
+nz-form-item {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+nz-form-label {
+    width: 150px;
+    font-weight: bold;
+}
+
+nz-form-control {
+    flex: 1;
+}
+
+input[nz-input], nz-select {
+    width: 100%;
+    height: 36px;
+}
+
+button {
+    margin-top: 20px;
+    width: 100%;
+}
+
+nz-select {
+    width: 100%;
+}
+
+nz-option:first-child {
+    display: block;
+}
+
+nz-select[nzSize="large"] {
+    width: 100%;
+}
+
+input[type="date"] {
+    padding-left: 10px;
+}
+
+/* Optional: Styling for error states */
+nz-form-control.ng-invalid.ng-touched nz-input,
+nz-form-control.ng-invalid.ng-touched nz-select {
+    border-color: #f44336;
+}

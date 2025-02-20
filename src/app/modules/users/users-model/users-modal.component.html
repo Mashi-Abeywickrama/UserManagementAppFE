@@ -1,0 +1,51 @@
+<!-- <div class="modal-overlay" *ngIf="isVisible">
+  <div class="modal">
+    <div class="modal-header">
+      <span class="modal-title">Edit User</span>
+      <button class="close-btn" (click)="cancel.emit()">×</button>
+    </div>
+
+    <form [formGroup]="userForm" (ngSubmit)="submitForm()" nz-form nzLayout="vertical">
+      <nz-form-item>
+        <nz-form-label nzFor="name">Name</nz-form-label>
+        <nz-form-control nzErrorTip="Name is required (min 3 characters)">
+          <input nz-input formControlName="name" placeholder="Enter Name" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="email">Email</nz-form-label>
+        <nz-form-control nzErrorTip="Enter a valid email">
+          <input nz-input formControlName="email" placeholder="Enter Email" />
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="role">Role</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="role" nzPlaceHolder="Select Role">
+            <nz-option nzValue="Admin" nzLabel="Admin"></nz-option>
+            <nz-option nzValue="User" nzLabel="User"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <nz-form-item>
+        <nz-form-label nzFor="status">Status</nz-form-label>
+        <nz-form-control>
+          <nz-select formControlName="status" nzPlaceHolder="Select Status">
+            <nz-option nzValue="Active" nzLabel="Active"></nz-option>
+            <nz-option nzValue="Inactive" nzLabel="Inactive"></nz-option>
+          </nz-select>
+        </nz-form-control>
+      </nz-form-item>
+
+      <div class="modal-footer">
+        <button nz-button nzType="default" (click)="cancel.emit()">Cancel</button>
+        <button nz-button nzType="primary" [disabled]="userForm.invalid" [nzLoading]="false">
+          Save
+        </button>
+      </div>
+    </form>
+  </div>
+</div> -->

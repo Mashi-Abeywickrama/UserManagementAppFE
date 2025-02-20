@@ -1,0 +1,40 @@
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f4f4f4;
+    align-self: center;
+    
+    nz-card {
+      width: 400px;
+      text-align: center;
+      align-self: center;
+        padding: 20px;
+    }
+  
+    form {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+    }
+  
+    nz-form-item {
+      width: 100%;
+    }
+  
+    button[nz-button] {
+      width: 100%;
+      background-color: #1890ff; // Blue button (NZ primary color)
+      border-color: #1890ff;
+      color: white;
+      font-size: 16px;
+      height: 40px;
+  
+      &:hover {
+        background-color: #40a9ff;
+        border-color: #40a9ff;
+      }
+    }
+  }
+  

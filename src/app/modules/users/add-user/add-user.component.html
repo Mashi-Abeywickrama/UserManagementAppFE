@@ -1,0 +1,51 @@
+<div class="add-user-container">    
+    <nz-card nzTitle="Add User">
+        <form [formGroup]="addUserForm" (ngSubmit)="onSubmit()">
+            <nz-form-item>
+                <nz-form-label nzFor="firstName" nzRequired>First Name</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="firstName" placeholder="First Name" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzFor="lastName" nzRequired>Last Name</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="lastName" placeholder="Last Name" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzFor="email" nzRequired>Email</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="email" placeholder="Email Address" type="email" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzFor="password" nzRequired>Password</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="password" placeholder="Password" type="password" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzFor="dateOfBirth" nzRequired>Date of Birth</nz-form-label>
+                <nz-form-control>
+                    <input nz-input formControlName="dateOfBirth" placeholder="Date of Birth" type="date" />
+                </nz-form-control>
+            </nz-form-item>
+
+            <nz-form-item>
+                <nz-form-label nzFor="roleType" nzRequired>Role</nz-form-label>
+                <nz-form-control>
+                    <nz-select formControlName="roleType" placeholder="Select Role">
+                        <nz-option *ngFor="let role of roles" [nzValue]="role.roleID" [nzLabel]="role.roleName"></nz-option>
+                    </nz-select>
+                </nz-form-control>
+            </nz-form-item>
+
+            <button nz-button nzType="primary" [disabled]="addUserForm.invalid">Add User</button>
+        </form>
+    </nz-card>
+</div>
