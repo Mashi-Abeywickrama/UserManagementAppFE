@@ -1,23 +1,59 @@
 <div class="search-container">
   <!-- Search Input Field -->
   <input nz-input [(ngModel)]="searchQuery" placeholder="Search by Student Name" (input)="onSearch()" />
-  
+
   <!-- Add User Button -->
   <button nz-button nzType="primary" (click)="navigateToAddUser()">Add User</button>
 </div>
 
-<app-users-table
-  [users]="filteredUsers"
-  (edit)="openEditModal($event)"
-  (delete)="confirmDelete($event)">
+<!-- Users Table -->
+<app-users-table [users]="users" (edit)="openEditModal($event)" (delete)="confirmDelete($event)">
 </app-users-table>
 
-<!-- <app-users-modal
-  [isVisible]="isEditModalVisible"
-  [user]="selectedUser!"
-  (save)="saveUser($event)"
-  (cancel)="closeEditModal()">
-</app-users-modal> -->
+<!-- Edit User Modal -->
+<div class="modal" *ngIf="isEditModalVisible">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Edit User</h2>
+      <button class="close" (click)="closeEditModal()">X</button>
+    </div>
 
+    <!-- Modal Content (Form) -->
+    <form>
+      <div class="form-group">
+        <label for="firstName">First Name</label>
+        <input type="text" id="firstName" [(ngModel)]="firstName" name="firstName" placeholder="First Name" required />
+      </div>
 
+      <div class="form-group">
+        <label for="lastName">Last Name</label>
+        <input type="text" id="lastName" [(ngModel)]="lastName" name="lastName" placeholder="Last Name" required />
+      </div>
 
+      <div class="form-group">
+        <label for="email">Email</label>
+        <input type="email" id="email" [(ngModel)]="email" name="email" placeholder="Email" required />
+      </div>
+
+      <div class="form-group">
+        <label for="dateOfBirth">Date of Birth</label>
+        <input type="date" id="dateOfBirth" [(ngModel)]="dateOfBirth" name="dateOfBirth" required />
+      </div>
+
+      <div class="form-group">
+        <label for="roleType">Role</label>
+        <select id="roleType" [(ngModel)]="roleType" name="roleType" required>
+          <option *ngFor="let role of roles" [value]="role.roleID">{{ role.roleName }}</option>
+        </select>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn" (click)="saveUser()">Save</button>
+        <button type="button" class="btn" (click)="closeEditModal()">Cancel</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<!-- Background overlay -->
+<div class="overlay" *ngIf="isEditModalVisible" (click)="closeEditModal()"></div>

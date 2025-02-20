@@ -1,33 +1,65 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 import { UsersService } from './users.service';
 import { User } from '../../shared/models/user.model';
-import { NzModalService } from 'ng-zorro-antd/modal';
+import { NzModalModule, NzModalService } from 'ng-zorro-antd/modal';
+import { NzFormModule } from 'ng-zorro-antd/form';  // Import form module
+import { NzInputModule } from 'ng-zorro-antd/input'; // Import input module
+import { NzButtonModule } from 'ng-zorro-antd/button'; // Import button module
+import { FormBuilder, FormGroup, FormsModule, ReactiveFormsModule, Validators } from '@angular/forms';
+import { NzSelectModule } from 'ng-zorro-antd/select';  // Import select module
 import { UsersTableComponent } from './users-table/users-table.component';
-import { Router } from '@angular/router';
-import { FormsModule } from '@angular/forms';  // Import FormsModule for ngModel
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-users',
   templateUrl: './users.component.html',
   styleUrls: ['./users.component.scss'],
   standalone: true,
-  imports: [UsersTableComponent, FormsModule]  // Include FormsModule in imports for ngModel
+  imports: [
+    NzFormModule,
+    NzInputModule,
+    NzButtonModule,
+    NzSelectModule,
+    UsersTableComponent,
+    ReactiveFormsModule,
+    NzModalModule,
+    FormsModule,
+    CommonModule
+  ] // Ensure the required Ant Design modules are imported
 })
 export class UsersComponent implements OnInit {
   users: User[] = [];
-  filteredUsers: User[] = [];
-  searchQuery: string = '';  // Store the search query
   selectedUser: User | null = null;
-  isEditModalVisible: boolean = false;
+
+  // User details for the modal
+  firstName: string = '';
+  lastName: string = '';
+  email: string = '';
+  dateOfBirth: string = '';
+  roleType = '';
+
+
+  isEditModalVisible = false;
+  searchQuery = '';  // Search query for filtering users
+  roles: any[] = [];
 
   constructor(
-    private usersService: UsersService, 
+    private usersService: UsersService,
     private modal: NzModalService,
-    private router: Router  // Inject Router for navigation
-  ) {}
+    private fb: FormBuilder, // FormBuilder for creating form group
+    private router: Router // Router for navigation
+  ) { }
 
   ngOnInit(): void {
     this.fetchUsers();
+    this.fetchRoles();
+  }
+
+  fetchRoles() {
+    this.usersService.getRoles().subscribe((roles) => {
+      this.roles = roles;
+    });
   }
 
   // Fetch users from the service
@@ -35,7 +67,6 @@ export class UsersComponent implements OnInit {
     this.usersService.getUsers().subscribe(
       (users) => {
         this.users = users;
-        this.filteredUsers = users;  // Initialize filtered users with all users
       },
       (error) => {
         console.error('Error fetching users', error);
@@ -43,27 +74,58 @@ export class UsersComponent implements OnInit {
     );
   }
 
-  // Open the edit modal with the selected user
+
+
+  // Open the edit modal and pass the student details
   openEditModal(userId: number): void {
-    const user = this.users.find(u => u.userID === userId);
+    const user = this.users.find((u) => u.userID === userId);
     if (user) {
-      this.selectedUser = { ...user };  // Clone to avoid direct mutations
+      this.selectedUser = user;
+      this.firstName = user.firstName;
+      this.lastName = user.lastName;
+      this.email = user.email;
+      this.dateOfBirth = user.dateOfBirth;
+      this.roleType = user.role.roleID === 1 ? 'Admin' : 'User';
       this.isEditModalVisible = true;
     }
   }
 
-  // Handle save from the modal
-  saveUser(updatedUser: User): void {
-    this.usersService.updateUser(updatedUser.userID, updatedUser).subscribe(() => {
-      this.fetchUsers();  // Refresh list after update
-      this.isEditModalVisible = false;
-    });
+  saveUser(): void {
+    if (this.firstName && this.lastName && this.email && this.dateOfBirth && this.roleType) {
+      var updatedUser: User;
+      if (this.selectedUser) {
+        updatedUser = {
+          ...this.selectedUser,
+          firstName: this.firstName,
+          lastName: this.lastName,
+          email: this.email,
+          dateOfBirth: this.dateOfBirth,
+          roleType: this.roleType === 'Admin' ? 1 : 2,
+        };
+        this.usersService.updateUser(updatedUser.userID, updatedUser).subscribe(() => {
+          this.fetchUsers(); // Refresh the users list after update
+          this.isEditModalVisible = false; // Close the modal
+        });
+      }
+
+    }
   }
 
-  // Handle cancel action
+  // Close the modal without saving
   closeEditModal(): void {
     this.isEditModalVisible = false;
-    this.selectedUser = null;
+  }
+
+  // Search users based on student name
+  onSearch(): void {
+    if (this.searchQuery) {
+      this.users = this.users.filter(user =>
+        user.firstName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
+        user.lastName.toLowerCase().includes(this.searchQuery.toLowerCase())
+      );
+    } else {
+      this.fetchUsers(); // Fetch all users if search is empty
+    }
   }
 
   // Confirm delete action before deleting the user
@@ -81,19 +143,7 @@ export class UsersComponent implements OnInit {
     });
   }
 
-  // Search function to filter users based on the search query
-  onSearch(): void {
-    if (this.searchQuery) {
-      this.filteredUsers = this.users.filter(user =>
-        user.firstName.toLowerCase().includes(this.searchQuery.toLowerCase()) ||
-        user.lastName.toLowerCase().includes(this.searchQuery.toLowerCase())
-      );
-    } else {
-      this.filteredUsers = this.users;  // Reset to all users when the search query is cleared
-    }
-  }
-
-  // Navigate to the Add User page
+  // Navigate to the add user route
   navigateToAddUser(): void {
     this.router.navigate(['/users/newuser']);
   }
