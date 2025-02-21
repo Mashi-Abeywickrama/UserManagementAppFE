@@ -85,7 +85,7 @@ export class UsersComponent implements OnInit {
       this.lastName = user.lastName;
       this.email = user.email;
       this.dateOfBirth = user.dateOfBirth;
-      this.roleType = user.role.roleID === 1 ? 'Admin' : 'User';
+      this.roleType = user.role.roleID.toString();
       this.isEditModalVisible = true;
     }
   }
@@ -100,7 +100,7 @@ export class UsersComponent implements OnInit {
           lastName: this.lastName,
           email: this.email,
           dateOfBirth: this.dateOfBirth,
-          roleType: this.roleType === 'Admin' ? 1 : 2,
+          roleType: Number(this.roleType),
         };
         this.usersService.updateUser(updatedUser.userID, updatedUser).subscribe(() => {
           this.fetchUsers(); // Refresh the users list after update
